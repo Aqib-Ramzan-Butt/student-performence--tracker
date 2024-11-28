@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        form input[type="text"], form input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        form button {
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .results th, .results td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .results th {
+            background-color: #f8f8f8;
+        }
+        .delete-button {
+            color: white;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Performance Tracker</h1>
+        <form action="/add_student" method="POST">
+            <input type="text" name="name" placeholder="Student Name" required>
+            <input type="number" name="score1" placeholder="Score 1 (e.g., Math)" required>
+            <input type="number" name="score2" placeholder="Score 2 (e.g., Science)" required>
+            <input type="number" name="score3" placeholder="Score 3 (e.g., English)" required>
+            <button type="submit">Add Student</button>
+        </form>
+        <div class="results">
+            <h2>Student Performance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Average Score</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.average | round(2) }}</td>
+                        <td>{{ student.status }}</td>
+                        <td>
+                            <form action="/delete_student" method="POST" style="display:inline;">
+                                <input type="hidden" name="name" value="{{ student.name }}">
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3>Class Average: {{ class_average | round(2) }}</h3>
+        </div>
+    </div>
+</body>
+</html>
